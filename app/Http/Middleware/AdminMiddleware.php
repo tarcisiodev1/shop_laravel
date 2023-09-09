@@ -20,7 +20,7 @@ class AdminMiddleware
             return $next($request);
         }
 
-        // Caso contrário, redirecione ou retorne um erro 403 (acesso negado)
+
         // Caso contrário, redirecione para a página inicial (home)
         return redirect('/')->with('error', 'Acesso negado. Você não é um administrador.');
     }

@@ -162,8 +162,7 @@ class ProductController extends Controller
     public function destroy($id)
     {
 
-        // session()->now('success', 'Produto deletado com sucesso');
-        // return response()->json(['success' => 'Produto deletado com sucesso' . $id]);
+       
         $product = Product::where('id', $id)->delete();
 
         if (!$product) {
