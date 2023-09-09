@@ -2,8 +2,8 @@
 
 @section('title', 'Register Admin') <!-- Define o título da página -->
 
-@include('site.navbar')
-@include('site.sidebar')
+@include('partials.navbar')
+@include('partials.sidebar')
 @section('content') <!-- Conteúdo da página -->
     </div>
     <div id="layoutSidenav_content">
@@ -66,7 +66,7 @@
     </div>
 @endsection
 
-@include('site.footer')
+@include('partials.footer')
 
 
 @section('js')
@@ -92,7 +92,7 @@
 
                             // Redirecionar ou fazer qualquer outra coisa com a resposta de sucesso
                             window.location.href =
-                                '{{ route('admin.products.index') }}';
+                                '{{ route('admin.users.index') }}';
                         },
                         error: function(xhr) {
                             if (xhr.status === 422) {

@@ -1,10 +1,11 @@
 @extends('master')
 
-@section('title', "dashboard")
-@include('site.navbar')
-@include('site.sidebar')
+@section('title', 'dashboard')
+@include('partials.navbar')
+@include('partials.sidebar')
 @section('content')
-<body class="sb-nav-fixed">
+
+    <body class="sb-nav-fixed">
 
 
         </div>
@@ -60,7 +61,8 @@
                                     <i class="fas fa-chart-area me-1"></i>
                                     Area Chart Example
                                 </div>
-                                <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                                <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas>
+                                </div>
                             </div>
                         </div>
                         <div class="col-xl-6">
@@ -75,16 +77,15 @@
                     </div>
                     {{-- tabela --}}
                     <div class="card mb-4">
-                        
+
                     </div>
                 </div>
             </main>
 
         </div>
-    </div>
+        </div>
 
 
-</body>
+    </body>
 @endsection
-@include('site.footer')
-
+@include('partials.footer')

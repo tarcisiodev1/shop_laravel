@@ -4,26 +4,22 @@
 @include('partials.navbar')
 @include('partials.sidebar')
 @section('content')
-
     </div>
     <div id="layoutSidenav_content">
         <main>
             <div class="container">
                 <div class="row mt-3 m-3">
                     <div class="col-md-12">
-                        <h2>Lista de Produtos</h2>
-                        <a href="{{ route('admin.products.create') }}" class="btn btn-primary mb-2" id="createNewProduct">Novo
-                            Produto</a>
+                        <h2>Lista de Usuários</h2>
 
                         @include('notification.notification')
-                        <table class="table table-bordered" id="products-table">
+                        <table class="table table-bordered" id="users-table">
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Nome</th>
-                                    <th>Valor</th>
-                                    <th>Dimensões</th>
-                                    <th>Peso</th>
+                                    <th>Email</th>
+                                    <th>Tipo</th>
                                     <th>Ações</th>
                                 </tr>
                             </thead>
@@ -34,53 +30,37 @@
                 </div>
             </div>
         </main>
-
     </div>
     </div>
-
-
-
 @endsection
 @include('partials.footer')
 @section('js')
     <script>
         $(function() {
-
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            var table = $('#products-table').DataTable({
+            var table = $('#users-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('admin.products.index') }}",
+                ajax: "{{ route('admin.users.index') }}",
                 columns: [{
                         data: 'id',
                         name: 'id'
                     },
                     {
-                        data: 'nome',
-                        name: 'nome',
-                        render: function(data, type, full, meta) {
-                            // Crie um link dinâmico para visualizar o produto
-                            var viewLink = "{{ route('admin.products.show', ':id') }}".replace(
-                                ':id', full.id);
-                            return '<a class="link-offset-2 link-underline link-underline-opacity-0" href="' +
-                                viewLink + '">' + data + '</a>';
-                        }
+                        data: 'name',
+                        name: 'name'
                     },
                     {
-                        data: 'valor',
-                        name: 'valor'
+                        data: 'email',
+                        name: 'email'
                     },
                     {
-                        data: 'dimensoes',
-                        name: 'dimensoes'
-                    },
-                    {
-                        data: 'peso',
-                        name: 'peso'
+                        data: 'type',
+                        name: 'type'
                     },
                     {
                         data: 'action',
@@ -90,41 +70,37 @@
                     }
                 ],
                 createdRow: function(row, data, dataIndex) {
-                    var editLink = "{{ route('admin.products.edit', ':id') }}".replace(':id', data.id);
-                    var deleteLink = "{{ route('admin.products.destroy', ':id') }}".replace(':id', data
+                    var deleteLink = "{{ route('admin.users.destroy', ':id') }}".replace(':id', data
                         .id);
 
-                    $(row).find('.editProduct').attr('data-id', data.id).attr('href', editLink);
-                    $(row).find('.deleteProduct').attr('data-id', data.id).attr('data-url', deleteLink);
+                    // Verifica se o usuário é do tipo "superadmin" para mostrar o botão de deletar
+                    if ("{{ auth()->user()->type }}" === 'superadmin') {
+                        $(row).find('.deleteUser').attr('data-id', data.id).attr('data-url',
+                            deleteLink);
+                    }
                 }
             });
 
+            $('body').on('click', '.deleteUser', function(e) {
+                e.preventDefault();
 
-
-            $('body').on('click', '.deleteProduct', function(e) {
-                // e.preventDefault();
-
-                var product_id = $(this).data("id");
+                var user_id = $(this).data("id");
                 var delete_url = $(this).data("url");
-                console.log(delete_url);
-                var result = confirm("Tem certeza de que deseja excluir este produto?");
+                var result = confirm("Tem certeza de que deseja excluir este usuário?");
 
                 if (result) {
                     $.ajax({
                         type: "DELETE",
-                        url: "{{ route('admin.products.store') }}" + '/' +
-                            product_id, // Usar a URL definida no atributo data-url
+                        url: delete_url,
                         data: {
-                            id: product_id
+                            id: user_id
                         },
                         dataType: 'json',
                         success: function(response) {
                             console.log(response);
-                            alert("Produto excluído com sucesso.");
+                            alert("Usuário excluído com sucesso.");
 
                             table.draw();
-
-
                         },
                         error: function(data) {
                             console.log('Erro:', data);
@@ -134,7 +110,6 @@
                     return false;
                 }
             });
-
         });
     </script>
 @endsection

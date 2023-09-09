@@ -57,7 +57,6 @@ class RegisteredUserController extends Controller
     public function storeAdmin(Request $request)
     {
 
-        // dd('eofmçweop');
         // Validação específica para o registro de administradores
         $validator = $this->validateAdmin($request->all());
 

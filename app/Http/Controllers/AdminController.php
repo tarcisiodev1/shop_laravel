@@ -2,52 +2,51 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\User;
 use Yajra\DataTables\Facades\DataTables;
 
 class AdminController extends Controller
 {
-    public function index(Request $request)
+    public function indexUser(Request $request)
     {
         if ($request->ajax()) {
-            $product = User::latest()->get();
-            return DataTables::of($product)
-                ->addColumn('action', function ($row) {
-                    $btn = '<a href="" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editProduct">Edit</a>';
+            $users = User::latest()->get();
+            return DataTables::of($users)
+                ->addColumn('action', function ($user) {
+                    // Verifica se o usuário é do tipo "superadmin" para mostrar o botão de deletar
+                    $deleteButton = auth()->user()->type === 'superadmin' ? '<a href="" data-toggle="tooltip"  data-id="' . $user->id . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteUser">Delete</a>' : '';
 
-                    $btn = $btn . ' <a href="" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteProduct">Delete</a>';
-
-                    return $btn;
+                    return $deleteButton;
                 })
                 ->rawColumns(['action'])
                 ->addIndexColumn()
                 ->make(true);
         }
 
-
-
-        return view('admin.product.index');
+        return view('admin.user.index');
     }
 
-
-    public function destroy($id)
+    // Método de delete para excluir usuários
+    public function destroy(String $id)
     {
 
-        // session()->now('success', 'Produto deletado com sucesso');
-        // return response()->json(['success' => 'Produto deletado com sucesso' . $id]);
-        $product = User::where('id', $id)->delete();
 
-        if (!$product) {
-            return response()->json(['error' => 'Produto não encontrado'], 404);
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['error' => 'Usuário não encontrado'], 404);
         }
 
-        if ($product->delete()) {
-
-            session()->now('success', 'Produto deletado com sucesso');
-            return response()->json(['success' => 'Produto deletado com sucesso  ']);
+        // Verifica se o usuário é do tipo "superadmin" para permitir a exclusão
+        if (auth()->user()->type !== 'superadmin') {
+            return response()->json(['error' => 'Você não tem permissão para excluir este usuário'], 403);
         }
-        session()->flash('error', 'Erro ao deletar produto');
-        return response()->json(['error' => 'Erro ao deletar produto'], 500);
+
+        if ($user->delete()) {
+            return response()->json(['success' => 'Usuário excluído com sucesso']);
+        }
+
+        return response()->json(['error' => 'Erro ao excluir usuário'], 500);
     }
 }
