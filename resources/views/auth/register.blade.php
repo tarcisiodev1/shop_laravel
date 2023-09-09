@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+    <form method="POST" action="{{  auth()->user()->type === 'admin' ? route('admin.register') : route('register') }}">
         @csrf
 
         <!-- Name -->

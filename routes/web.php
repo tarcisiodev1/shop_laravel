@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SessionController;
@@ -25,12 +26,14 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 // ->middleware(['auth', 'verified'])->name('dashboard');
-Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', function () {
         return view('admin.index');
     });
 
     Route::resource('products', ProductController::class);
+    Route::get('/register', [RegisteredUserController::class, 'createAdmin'])->name('register');
+    Route::post('/register', [RegisteredUserController::class, 'storeAdmin'])->name('store');
 });
 Route::middleware('auth')->group(function () {
 
