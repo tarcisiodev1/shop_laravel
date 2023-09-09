@@ -114,17 +114,17 @@
                         processData: false,
                         contentType: false,
                         success: function(response) {
-                            // Limpar erros anteriores
+
                             $('.feedback').html('');
 
-                            // Redirecionar ou fazer qualquer outra coisa com a resposta de sucesso
+
                             window.location.href =
                                 '{{ route('admin.products.index') }}';
                         },
                         error: function(xhr) {
                             $('.feedback').html('');
                             if (xhr.status === 422) {
-                                // Exibir erros de validação abaixo de cada campo
+                             
                                 var errors = xhr.responseJSON.errors;
                                 $.each(errors, function(key, value) {
                                     $('#' + key + 'Error').html(

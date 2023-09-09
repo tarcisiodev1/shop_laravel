@@ -79,10 +79,10 @@
                         processData: false,
                         contentType: false,
                         success: function(response) {
-                            // Limpar erros anteriores
+                           
                             $('.feedback').html('');
 
-                            // Redirecionar ou fazer qualquer outra coisa com a resposta de sucesso
+
                             window.location.href =
                                 '{{ route('admin.products.index') }}';
                         },

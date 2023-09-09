@@ -87,10 +87,10 @@
                         url: $(this).attr('action'),
                         data: $(this).serialize(),
                         success: function(response) {
-                            // Limpar erros anteriores
+
                             $('feedback').html('');
 
-                            // Redirecionar ou fazer qualquer outra coisa com a resposta de sucesso
+
                             window.location.href =
                                 '{{ route('admin.users.index') }}';
                         },
