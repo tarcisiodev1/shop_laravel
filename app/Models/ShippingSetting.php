@@ -9,7 +9,7 @@ class ShippingSetting extends Model
 {
     use HasFactory;
 
-    protected $table = 'shipping_settings'; // Nome da tabela
+    protected $table = 'shipping_settings';
 
     protected $fillable = [
         'product_id',

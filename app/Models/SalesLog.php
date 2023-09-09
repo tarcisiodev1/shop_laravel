@@ -9,7 +9,7 @@ class SalesLog extends Model
 {
     use HasFactory;
 
-    protected $table = 'sales_logs'; // Nome da tabela
+    protected $table = 'sales_logs';
 
     protected $fillable = [
         'order_id',

@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title')
+@section('title', 'Home')
 
 @section('content')
     <!--Main Navigation-->
@@ -31,7 +31,7 @@
                         </a>
                     @else
                         @if (auth()->user()->type === 'admin' || auth()->user()->type === 'superadmin')
-                            <a href="{{ route('dashboard') }}"
+                            <a href="{{ route('admin.') }}"
                                 class="btn btn-light shadow-0 text-primary pt-2 border border-white me-3">
                                 <span class="pt-1">Dashboard</span>
                             </a>
@@ -70,7 +70,28 @@
             </header>
 
             <div class="row">
-                <!-- Product Cards Here -->
+                @foreach ($products as $product)
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <img src="{{ asset('storage/assets/images/' . $product->nome_do_arquivo) ?? '' }} "
+                                class="card-img-top" alt="{{ $product->nome }} Image">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $product->nome }}</h5>
+                                <p class="card-text">Price: ${{ $product->valor }}</p>
+                                <p class="card-text">Dimensions: {{ $product->dimensoes }}</p>
+                                <p class="card-text">Weight: {{ $product->peso }} kg</p>
+                                <a href="{{ route('home.product', ['id' => $product->id]) }}"
+                                    class="btn btn-primary">Details</a>
+                                <a href="#" class="btn btn-success">Buy</a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <!-- Paginação -->
+            <div class="d-flex justify-content-center mt-4">
+                {{ $products->links() }}
             </div>
         </div>
     </section>
@@ -78,120 +99,45 @@
 
     <!-- Footer -->
     <footer class="text-center text-lg-start text-muted mt-3" style="background-color: #f5f5f5;">
-        <section class="">
-            <div class="container text-center text-md-start pt-4 pb-4">
-                <div class="row mt-3">
-                    <div class="col-12 col-lg-3 col-sm-12 mb-2">
-                        <a href="https://mdbootstrap.com/" target="_blank" class="">
-                            <img src="https://mdbootstrap.com/img/logo/mdb-transaprent-noshadows.png" height="35" />
-                        </a>
-                        <p class="mt-2 text-dark">
-                            © 2023 Copyright: MDBootstrap.com
-                        </p>
-                    </div>
-
-                    <div class="col-6 col-sm-4 col-lg-2">
-                        <h6 class="text-uppercase text-dark fw-bold mb-2">
-                            Store
-                        </h6>
-                        <ul class="list-unstyled mb-4">
-                            <li><a class="text-muted" href="#">About us</a></li>
-                            <li><a class="text-muted" href="#">Find store</a></li>
-                            <li><a class="text-muted" href="#">Categories</a></li>
-                            <li><a class="text-muted" href="#">Blogs</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="col-6 col-sm-4 col-lg-2">
-                        <h6 class="text-uppercase text-dark fw-bold mb-2">
-                            Information
-                        </h6>
-                        <ul class="list-unstyled mb-4">
-                            <li><a class="text-muted" href="#">Help center</a></li>
-                            <li><a class="text-muted" href="#">Money refund</a></li>
-                            <li><a class="text-muted" href="#">Shipping info</a></li>
-                            <li><a class="text-muted" href="#">Refunds</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="col-6 col-sm-4 col-lg-2">
-                        <h6 class="text-uppercase text-dark fw-bold mb-2">
-                            Support
-                        </h6>
-                        <ul class="list-unstyled mb-4">
-                            <li><a class="text-muted" href="#">Help center</a></li>
-                            <li><a class="text-muted" href="#">Documents</a></li>
-                            <li><a class="text-muted" href="#">Account restore</a></li>
-                            <li><a class="text-muted" href="#">My orders</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="col-6 col-sm-4 col-lg-3">
-                        <h6 class="text-uppercase text-dark fw-bold mb-2">Newsletter</h6>
-                        <p class="text-muted">Stay in touch with latest updates about our products and offers</p>
-                        <div class="input-group mb-3">
-                            <input type="email" class="form-control border" placeholder="Email" aria-label="Email"
-                                aria-describedby="button-addon2" />
-                            <button class="btn btn-light border shadow-0" type="button" id="button-addon2"
-                                data-mdb-ripple-color="dark">
-                                Join
-                            </button>
-                        </div>
-                    </div>
+        <div class="container pt-4">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 class="text-uppercase">Sobre Nós</h5>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel tincidunt nunc.
+                    </p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="text-uppercase">Links Úteis</h5>
+                    <ul class="list-unstyled">
+                        <li>
+                            <a href="#!">Perguntas frequentes</a>
+                        </li>
+                        <li>
+                            <a href="#!">Termos de Serviço</a>
+                        </li>
+                        <li>
+                            <a href="#!">Política de Privacidade</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="text-uppercase">Entre em Contato</h5>
+                    <ul class="list-unstyled">
+                        <li>
+                            <i class="fas fa-envelope me-2"></i>
+                            <a href="mailto:contato@example.com">contato@example.com</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone me-2"></i>
+                            <a href="tel:+1234567890">+1 (234) 567-890</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </section>
-        <div class="">
-            <div class="container">
-                <div class="d-flex justify-content-between py-4 border-top">
-                    <div>
-                        <i class="fab fa-lg fa-cc-visa text-dark"></i>
-                        <i class="fab fa-lg fa-cc-amex text-dark"></i>
-                        <i class="fab fa-lg fa-cc-mastercard text-dark"></i>
-                        <i class="fab fa-lg fa-cc-paypal text-dark"></i>
-                    </div>
-                    <div class="dropdown dropup">
-                        <a class="dropdown-toggle text-dark" href="#" id="Dropdown" role="button"
-                            data-mdb-toggle="dropdown" aria-expanded="false">
-                            <i class="flag-united-kingdom flag m-0 me-1"></i>English
-                        </a>
-
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="Dropdown">
-                            <li>
-                                <a class="dropdown-item" href="#"><i class="flag-united-kingdom flag"></i>English
-                                    <i class="fa fa-check text-success ms-2"></i></a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider" />
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#"><i class="flag-poland flag"></i>Polski</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#"><i class="flag-china flag"></i>中文</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#"><i class="flag-japan flag"></i>日本語</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#"><i class="flag-germany flag"></i>Deutsch</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#"><i class="flag-france flag"></i>Français</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#"><i class="flag-spain flag"></i>Español</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#"><i class="flag-russia flag"></i>Русский</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#"><i class="flag-portugal flag"></i>Português</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+        </div>
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+            © {{ date('Y') }} Seu Site. Todos os direitos reservados.
         </div>
     </footer>
     <!-- Footer -->

@@ -9,7 +9,7 @@ class PaymentSetting extends Model
 {
     use HasFactory;
 
-    protected $table = 'payment_settings'; // Nome da tabela
+    protected $table = 'payment_settings'; 
 
     protected $fillable = [
         'method',
