@@ -14,4 +14,8 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    server: {
+        https: false,
+        host: "shop_laravel.test",
+    },
 });
