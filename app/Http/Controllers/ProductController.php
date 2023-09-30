@@ -121,6 +121,8 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
+
+        //validação para update
         $validator = $this->validateProduct($request->all());
 
         if ($validator->fails()) {
@@ -162,7 +164,7 @@ class ProductController extends Controller
     public function destroy($id)
     {
 
-       
+
         $product = Product::where('id', $id)->delete();
 
         if (!$product) {
