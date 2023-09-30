@@ -137,7 +137,7 @@ class ProductController extends Controller
             'dimensoes' => $request->input('dimensoes'),
             'peso' => $request->input('peso'),
         ]);
-
+        //tratamento de imagem 
         if ($request->hasFile('imagem')) {
             $imagem = $request->file('imagem');
 
