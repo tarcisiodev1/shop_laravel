@@ -10,6 +10,7 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
+
 class ProductController extends Controller
 {
     public function index(Request $request)
@@ -137,7 +138,7 @@ class ProductController extends Controller
             'dimensoes' => $request->input('dimensoes'),
             'peso' => $request->input('peso'),
         ]);
-        //tratamento de imagem 
+        //tratamento de imagem
         if ($request->hasFile('imagem')) {
             $imagem = $request->file('imagem');
 
