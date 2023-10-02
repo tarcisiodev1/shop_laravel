@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class HomeController extends Controller
 {
     public function index()
-    {
+    { //reformular com eloquent
         // Recupere os produtos com suas imagens relacionadas e aplique a paginação
         $products = DB::table('products')
             ->join('product_images', 'products.id', '=', 'product_images.product_id')
