@@ -15,9 +15,9 @@
 </head>
 
 <body>
-
+    @include('front.partials.navbar')
     @yield('content')
-
+    @include('front.partials.footer')
     <script src="{{ asset('storage/assets/scripts.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
@@ -27,7 +27,7 @@
     <script src="{{ asset('storage/assets/chart-area-demo.js') }}"></script>
     <script src="{{ asset('storage/assets/chart-bar-demo.js') }}"></script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" --}}
-    crossorigin="anonymous"></script>
+    {{-- crossorigin="anonymous"></script> --}}
     <script src="{{ asset('storage/assets/datatables-simple-demo.js') }}"></script>
     @yield('js')
 

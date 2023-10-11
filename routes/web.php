@@ -3,6 +3,8 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\SuperController;
+use App\Http\Controllers\CepController;
+use App\Http\Controllers\FrontProductController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
@@ -30,7 +32,9 @@ Auth::routes();
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/details/{id}', [HomeController::class, 'show'])->name('home.product');
+Route::get('/details/{id}', [FrontProductController::class, 'show'])->name('home.product');
+//calculate.shipping
+Route::get('/calcular-frete', [CepController::class, 'calculate.shipping'])->name('calculate.shipping');
 // Route::get('clear-session-message', [SessionController::class, 'clearMessage'])->name('clear.session.message');
 
 Route::get('/dashboard', function () {

@@ -31,6 +31,6 @@ class HomeController extends Controller
             ->orderBy('products.created_at', 'desc')
             ->paginate(12);
 
-        return view('home1', compact('products'));
+        return view('front.index', compact('products'));
     }
 }
