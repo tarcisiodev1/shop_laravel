@@ -20,10 +20,8 @@
                             <img src="{{ asset('storage/assets/images/' . $product->nome_do_arquivo) ?? '' }} "
                                 class="card-img-top" alt="{{ $product->nome }} Image">
                             <div class="card-body">
-                                <h5 class="card-title">{{ $product->nome }}</h5>
-                                <p class="card-text">Price: ${{ $product->valor }}</p>
-                                <p class="card-text">Dimensions: {{ $product->dimensoes }}</p>
-                                <p class="card-text">Weight: {{ $product->peso }} kg</p>
+                                <h5 class="card-title mb-4">{{ $product->nome }}</h5>
+                                <p class="card-text ">Price: ${{ $product->valor }}</p>
                                 <a href="{{ route('home.product', ['id' => $product->id]) }}"
                                     class="btn btn-primary">Details</a>
                                 <a href="#" class="btn btn-success">Buy</a>

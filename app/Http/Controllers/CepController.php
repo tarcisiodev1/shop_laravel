@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class CepController extends Controller
 {
@@ -22,7 +23,7 @@ class CepController extends Controller
             'nCdEmpresa' => '',
             'sDsSenha' => '',
             'nCdServico' => '40010,41106', // Códigos de serviço dos Correios para Sedex e PAC
-            'sCepOrigem' => 'SEU_CEP_ORIGEM', // Substitua pelo seu CEP de origem
+            'sCepOrigem' => '01153-000', // Substitua pelo seu CEP de origem
             'sCepDestino' => $cep,
             'nVlPeso' => '1', // Peso do produto em kg
             'nCdFormato' => '1', // Formato da encomenda (caixa)
