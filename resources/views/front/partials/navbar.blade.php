@@ -50,7 +50,7 @@
                 brands in our store
             </h1>
             <p>
-                Trendy Products, Factory Prices, Excellent Service
+                Trendy Products, Factory Prices, Excellent Service cards
             </p>
             <button type="button" class="btn btn-outline-light">
                 Learn more
