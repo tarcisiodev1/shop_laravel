@@ -34,7 +34,7 @@ Auth::routes();
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/details/{id}', [FrontProductController::class, 'show'])->name('home.product');
 //calculate.shipping
-Route::get('/calcular-frete', [CepController::class, 'calculate.shipping'])->name('calculate.shipping');
+Route::post('/calcular-frete', [CepController::class, 'calculateShipping'])->name('calculate.shipping');
 // Route::get('clear-session-message', [SessionController::class, 'clearMessage'])->name('clear.session.message');
 
 Route::get('/dashboard', function () {

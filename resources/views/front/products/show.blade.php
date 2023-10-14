@@ -2,14 +2,12 @@
 
 @section('title', 'Visualizar Produto')
 
-
 @section('content')
     <div id="layoutSidenav_content">
-
         <main>
             <div class="container mt-5">
                 <div class="row">
-                    <div class="col-md-6  mt-5 mb-5">
+                    <div class="col-md-6 mt-5 mb-5">
                         <!-- Exibir imagens do produto -->
                         <div id="product-images" class="carousel slide" data-ride="carousel">
                             <div class="carousel-inner">
@@ -36,12 +34,8 @@
                     <div class="col-md-6 mt-5 mb-5">
                         <h2 class="mb-4">Detalhes do Produto</h2>
                         <ul class="list-group">
-                            {{-- <li class="list-group-item"><strong>ID:</strong> {{ $product->id }}</li> --}}
                             <li class="list-group-item"><strong>Nome:</strong> {{ $product->nome }}</li>
                             <li class="list-group-item"><strong>Valor:</strong> R$ {{ $product->valor }}</li>
-                            {{-- <li class="list-group-item"><strong>Dimensões:</strong> {{ $product->dimensoes }}</li> --}}
-                            {{-- <li class="list-group-item"><strong>Peso:</strong> {{ $product->peso }}</li> --}}
-                            <!-- Adicione outros campos do produto aqui -->
                         </ul>
 
                         <!-- Seção para calcular o frete (CEP) -->
@@ -66,20 +60,19 @@
         </main>
     </div>
 @endsection
+
 @section('js')
     <script>
-        // Adicionando um listener para o formulário
         document.getElementById('calculateShippingForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Evita o comportamento padrão do formulário
-
-            const cep = document.getElementById('cep').value; // Obtém o valor do CEP
-
-            // Envia a requisição AJAX
+            event.preventDefault();
+            const cep = document.getElementById('cep').value;
             fetch("{{ route('calculate.shipping') }}", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content') // Adiciona o token CSRF à requisição
                     },
                     body: JSON.stringify({
                         cep: cep
@@ -87,7 +80,7 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    // Atualiza a div com o valor do frete
+                    console.log('Resposta do servidor:', data);
                     document.getElementById('valor-frete').innerHTML = 'Valor do frete: R$ ' + data.valor_frete;
                 })
                 .catch(error => {

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use EscapeWork\Frete\Correios\PrecoPrazo;
+use EscapeWork\Frete\Correios\Data;
+use EscapeWork\Frete\FreteException;
 
 class CepController extends Controller
 {
@@ -15,39 +18,37 @@ class CepController extends Controller
      */
     public function calculateShipping(Request $request)
     {
+
         // Obtenha o CEP do formulário
         $cep = $request->input('cep');
 
-        // Faça a requisição à API dos Correios para calcular o frete
-        $response = Http::get("http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx", [
-            'nCdEmpresa' => '',
-            'sDsSenha' => '',
-            'nCdServico' => '40010,41106', // Códigos de serviço dos Correios para Sedex e PAC
-            'sCepOrigem' => '01153-000', // Substitua pelo seu CEP de origem
-            'sCepDestino' => $cep,
-            'nVlPeso' => '1', // Peso do produto em kg
-            'nCdFormato' => '1', // Formato da encomenda (caixa)
-            'nVlComprimento' => '20', // Comprimento da encomenda em cm
-            'nVlAltura' => '10', // Altura da encomenda em cm
-            'nVlLargura' => '15', // Largura da encomenda em cm
-            'nVlDiametro' => '0', // Diâmetro da encomenda em cm
-            'sCdMaoPropria' => 'N',
-            'nVlValorDeclarado' => '0',
-            'sCdAvisoRecebimento' => 'N',
-            'StrRetorno' => 'xml',
-        ]);
+        $frete = new PrecoPrazo();
+        $frete->setCodigoServico(Data::SEDEX)
+            ->setCodigoEmpresa('')      # opcional
+            ->setSenha('')               # opcional
+            ->setCepOrigem('07500000')   # apenas numeros, sem hifen(-)
+            ->setCepDestino('49160000') # apenas numeros, sem hifen(-)
+            ->setComprimento(30)              # obrigatorio
+            ->setAltura(30)                   # obrigatorio
+            ->setLargura(30)                  # obrigatorio
+            ->setDiametro(30)                 # obrigatorio
+            ->setPeso(0.5);                   # obrigatorio
 
-        // Verifique se a requisição foi bem-sucedida
-        if ($response->successful()) {
-            // Obtenha o valor do frete a partir da resposta XML
-            $xml = simplexml_load_string($response->body());
-            $valorFrete = (float) $xml->cServico[0]->Valor;
 
-            // Retorne o valor do frete
-            return response()->json(['valor_frete' => $valorFrete]);
+        try {
+            $result = $frete->calculate();
+
+            $valorFrete = $result['cServico']['Valor'];
+            $prazoEntrega = $result['cServico']['PrazoEntrega'];
+
+            // dd($result);
+
+            return response()->json([
+                'valor_frete' => $valorFrete,
+                'prazo_entrega' => $prazoEntrega
+            ]);
+        } catch (FreteException $e) {
+            return response()->json(['error' => 'Erro ao calcular o frete'], 500);
         }
-
-        // Se a requisição falhar, retorne um erro
-        return response()->json(['error' => 'Falha ao calcular o frete'], 500);
     }
 }
