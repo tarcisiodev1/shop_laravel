@@ -108,7 +108,7 @@ class ProductController extends Controller
     {
         // Busque o produto pelo ID
         $product = Product::find($id);
-        // dd($product);
+
         // Verifique se o produto foi encontrado
         if (!$product) {
             return redirect()->route('admin.products.index')->with('error', 'Produto não encontrado.');
