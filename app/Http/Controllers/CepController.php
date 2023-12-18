@@ -41,7 +41,7 @@ class CepController extends Controller
             $valorFrete = $result['cServico']['Valor'];
             $prazoEntrega = $result['cServico']['PrazoEntrega'];
 
-            // dd($result);
+
 
             return response()->json([
                 'valor_frete' => $valorFrete,
