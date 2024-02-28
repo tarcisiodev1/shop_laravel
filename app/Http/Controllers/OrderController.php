@@ -8,7 +8,7 @@ class OrderController extends Controller
 {
     public function indexAdmin()
     {
-        //lógica de ondem de venda
-        return "Controller de teste funcionando!";
+        //lógica de ondem de venda,
+        return "!!";
     }
 }
