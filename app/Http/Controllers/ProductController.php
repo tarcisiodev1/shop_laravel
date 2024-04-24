@@ -8,7 +8,8 @@ use App\Models\ProductImage;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image;
+// use Intervention\Image\Facades\Image;
+use Spatie\Image\Image;
 
 
 class ProductController extends Controller
@@ -42,29 +43,37 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        // Validação específica para o registro de produtos
-        $validator = $this->validateProduct($request->all());
+        $validator = Validator::make($request->all(), [
+            'nome' => 'required',
+            'valor' => 'required|numeric',
+            'dimensoes' => 'required',
+            'peso' => 'required|numeric',
+        ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        // Verificar se uma imagem foi enviada
         if ($request->hasFile('imagem')) {
             $imagem = $request->file('imagem');
 
-            // Redimensionar a imagem para 366x366
-            $image = Image::make($imagem->getRealPath())->fit(366, 366);
+            if (!$imagem->isValid()) {
+                return response()->json(['error' => 'Invalid file'], 400);
+            }
 
             $nomeImagem = Str::random(30) . '.' . $imagem->getClientOriginalExtension();
 
-            // Salvar a imagem redimensionada na pasta storage/app/public/assets/images/product_images
-            $caminhoImagem = $image->save(storage_path('app/public/assets/images/product_images/' . $nomeImagem));
+            $imagem->storeAs('public/assets/images/product_images', $nomeImagem);
 
-            // Caminho relativo do arquivo
-            $caminhoRelativo = 'product_images/' . $nomeImagem;
 
-            // Criar o produto com os dados do formulário
+            $imagePath = public_path('storage/assets/images/product_images/' . $nomeImagem);
+
+            $image = Image::load($imagePath)->width(100)
+                ->height(100)
+                ->save($imagePath);
+
+            // $image->save($imagePath);
+
             $produto = Product::create([
                 'nome' => $request->input('nome'),
                 'valor' => $request->input('valor'),
@@ -72,19 +81,14 @@ class ProductController extends Controller
                 'peso' => $request->input('peso'),
             ]);
 
-
-            // Criar a imagem associada ao produto
             ProductImage::create([
                 'product_id' => $produto->id,
-                'nome_do_arquivo' => $caminhoRelativo,
+                'nome_do_arquivo' => $nomeImagem,
             ]);
 
             return response()->json(['message' => 'Produto criado com sucesso'], 200);
         }
-
-        return response()->json(['error' => 'Erro ao criar o produto'], 500);
     }
-
     // Método para validação personalizada dos produtos
     protected function validateProduct(array $data)
     {
@@ -120,10 +124,9 @@ class ProductController extends Controller
         return view('back.admin.product.edit', compact('product', 'productImage'));
     }
 
-    public function update(Request $request, String $id)
+    public function update(Request $request, $id)
     {
-
-        //validação para update
+        // Validação para update
         $validator = $this->validateProduct($request->all());
 
         if ($validator->fails()) {
@@ -138,24 +141,36 @@ class ProductController extends Controller
             'dimensoes' => $request->input('dimensoes'),
             'peso' => $request->input('peso'),
         ]);
-        //tratamento de imagem
+
+        // Tratamento de imagem
         if ($request->hasFile('imagem')) {
             $imagem = $request->file('imagem');
 
-            $image = Image::make($imagem->getRealPath())->fit(366, 366);
+            if (!$imagem->isValid()) {
+                return response()->json(['error' => 'Invalid file'], 400);
+            }
 
             $nomeImagem = Str::random(30) . '.' . $imagem->getClientOriginalExtension();
 
-            $caminhoImagem = $image->save(storage_path('app/public/assets/images/product_images/' . $nomeImagem));
+            $caminhoImagem = $imagem->storeAs('product_images', $nomeImagem);
 
-            $caminhoRelativo = 'product_images/' . $nomeImagem;
+            $imagem->storeAs('public/assets/images/product_images', $nomeImagem);
+
+
+            $imagePath = public_path('storage/assets/images/product_images/' . $nomeImagem);
+
+            $image = Image::load($imagePath)->width(100)
+                ->height(100)
+                ->save($imagePath);
+
+
 
             $productImage = ProductImage::where('product_id', $produto->id)->first();
             // Atualizar o nome do arquivo na imagem existente ou criar uma nova imagem
             $productImage = $productImage ?? new ProductImage();
             $productImage->fill([
                 'product_id' => $produto->id,
-                'nome_do_arquivo' => $caminhoRelativo,
+                'nome_do_arquivo' => $nomeImagem,
             ])->save();
         }
 

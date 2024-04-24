@@ -98,6 +98,7 @@
                                 });
                             } else {
                                 // Exibir mensagem de erro geral em uma div
+                                console.log(xhr);
                                 $('#generalError').html(
                                     '<span class="text-danger">Erro ao criar o produto</span>'
                                 );

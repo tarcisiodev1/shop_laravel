@@ -48,7 +48,7 @@
                                             <th>Imagens</th>
                                             <td>
                                                 @foreach ($productImages as $image)
-                                                    <img src="{{ asset('storage/assets/images/' . $image->nome_do_arquivo) }}"
+                                                    <img src="{{ asset('storage/assets/images/product_images/' . $image->nome_do_arquivo) }}"
                                                         alt="Imagem do Produto">
                                                 @endforeach
                                             </td>
