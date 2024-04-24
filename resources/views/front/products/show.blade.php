@@ -15,7 +15,7 @@
                                     @foreach ($productImages as $key => $image)
                                         <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
                                             <img class="d-block w-100"
-                                                src="{{ asset('storage/assets/images/' . $image->nome_do_arquivo) }}"
+                                                src="{{ asset('storage/assets/images/product_images/' . $image->nome_do_arquivo) }}"
                                                 alt="Imagem do Produto">
                                         </div>
                                     @endforeach

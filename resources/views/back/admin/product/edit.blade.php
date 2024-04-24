@@ -60,7 +60,7 @@
                                         <label class="form-label">Imagem Atual do Produto</label>
                                         <div class="text-center">
                                             @if ($productImage)
-                                                <img src="{{ asset('storage/assets/images/' . $productImage->nome_do_arquivo) }}"
+                                                <img src="{{ asset('storage/assets/images/product_images/' . $productImage->nome_do_arquivo) }}"
                                                     alt="Imagem Atual do Produto" class="img-fluid">
                                             @else
                                                 <p class="text-muted">Nenhuma imagem disponível</p>
