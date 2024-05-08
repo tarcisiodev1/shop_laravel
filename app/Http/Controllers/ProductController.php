@@ -61,16 +61,18 @@ class ProductController extends Controller
                 return response()->json(['error' => 'Invalid file'], 400);
             }
 
+            // Gera um nome aleatório para a imagem, composto por 30 caracteres alfanuméricos, seguido da extensão do arquivo original da imagem.
             $nomeImagem = Str::random(30) . '.' . $imagem->getClientOriginalExtension();
 
+            // Armazena a imagem no diretório especificado ('public/assets/images/product_images') com o nome gerado aleatoriamente.
             $imagem->storeAs('public/assets/images/product_images', $nomeImagem);
 
-
+            // Define o caminho completo para a imagem recém-salva.
             $imagePath = public_path('storage/assets/images/product_images/' . $nomeImagem);
 
-            $image = Image::load($imagePath)->width(100)
-                ->height(100)
-                ->save($imagePath);
+            // Carrega a imagem e redimensiona para uma largura e altura de 100 pixels.
+            $image = Image::load($imagePath)->width(100)->height(100)->save($imagePath);
+
 
             // $image->save($imagePath);
 
